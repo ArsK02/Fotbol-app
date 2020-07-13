@@ -1,0 +1,57 @@
+@import "../../variables.scss";
+
+.classification {
+  padding-top: 30px;
+}
+
+.classification__table {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.classification_th {
+  padding-left: 4px;
+  padding-right: 4px;
+
+  text-align: center;
+
+  &:first-of-type {
+    padding-left: 0;
+  }
+
+  &:last-of-type {
+    padding-right: 0;
+  }
+
+  &--team {
+    padding-left: 10px;
+
+    text-align: left;
+  }
+}
+
+.classification__row:nth-child(2n) {
+  background-color: rgba(0, 150, 136, 0.1)
+}
+
+.classification__td {
+  text-align: center;
+
+  &--bold {
+    font-weight: bold;
+  }
+
+  &--team {
+    padding-left: 10px;
+
+    text-align: left;
+  }
+
+  &:first-of-type {
+    padding-left: 0;
+  }
+
+  &:last-of-type {
+    padding-right: 0;
+  }
+}

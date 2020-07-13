@@ -1,0 +1,18 @@
+<div *ngIf="matches.length > 0; else loading">
+  <table class="matches">
+    <tbody class="matches__body">
+      <tr *ngFor="let match of matches; let i = index" class="matches__row">
+        <td class="matches__td matches__td--team">{{match.homeTeam.name}}</td>
+        <td class="matches__td matches__td--date">
+          <p class="matches__date">{{match.utcDate | date:'d MMM':'+0200':'es' }}</p>
+          <p class="matches__date">{{match.utcDate | date:'HH:mm':'+0200':'es' }}</p>
+        </td>
+        <td class="matches__td matches__td--team">{{match.awayTeam.name}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #loading>
+  <p class="loading-text">Cargando...</p>
+</ng-template>

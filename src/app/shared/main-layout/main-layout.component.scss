@@ -1,0 +1,52 @@
+@import "../../../variables.scss";
+
+.navigation {
+  color: $white;
+
+  background-color: $teal;
+}
+
+.navigation__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+.navigation__title {
+  margin: 0;
+  color: $yellow;
+}
+
+.navigation__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  display: flex;
+}
+
+.navigation__item {
+  &--active .navigation__link {
+    text-decoration: underline;
+  }
+}
+
+.navigation__link {
+  display: inline-block;
+  padding: 15px 10px;
+
+  color: $yellow;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    background-color: $dark-teal;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}

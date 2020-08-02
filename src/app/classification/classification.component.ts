@@ -10,24 +10,34 @@ import { DataService } from '../shared/data.service';
 })
 export class ClassificationComponent implements OnInit {
   columnsToDisplay = [
-    "position",
-    "name",
-    "points",
-    "playedGames",
-    "won",
-    "draw",
-    "lost",
-    "goalsFor",
-    "goalsAgainst"
-  ]
+    'position',
+    'name',
+    'points',
+    'playedGames',
+    'won',
+    'draw',
+    'lost',
+    'goalsFor',
+    'goalsAgainst'
+  ];
 
-  teams$: Observable<Team[]>
+  teams$: Observable<Team[]>;
+  leagueTitle = {
+    bundesliga: 'Bundesliga',
+    premierLeague: 'Premier Luague',
+    serieA: 'Serie A',
+    primeraDivision: 'LaLiga Santander'
+  };
+  selectedLegue = 'primeraDivision';
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.getClassification()
-    this.teams$ = this.dataService.teams
+    this.dataService.getClassification('primeraDivision');
+    this.teams$ = this.dataService.teams;
   }
 
+  getStandings(league: any) {
+    this.dataService.getClassification(league);
+  }
 }

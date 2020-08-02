@@ -1,17 +1,56 @@
-<div *ngIf="matches.length > 0; else loading">
-  <table class="matches">
-    <tbody class="matches__body">
-      <tr *ngFor="let match of matches; let i = index" class="matches__row">
-        <td class="matches__td matches__td--team">{{match.homeTeam.name}}</td>
-        <td class="matches__td matches__td--date">
-          <p class="matches__date">{{match.utcDate | date:'d MMM':'+0200':'es' }}</p>
-          <p class="matches__date">{{match.utcDate | date:'HH:mm':'+0200':'es' }}</p>
-        </td>
-        <td class="matches__td matches__td--team">{{match.awayTeam.name}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<section *ngIf="matches.length > 0; else loading" class="matches">
+  <div class="matches__header">
+    <h1 class="matches__league-name">LaLiga Santander</h1>
+
+    <mat-form-field class="classification__filter">
+      <mat-label>Leagues</mat-label>
+      <mat-select #select [(value)]="selectedLegue" (selectionChange)="getLeagueMatches(select.value)">
+        <mat-option value="primeraDivision">LaLiga Santander (ES)</mat-option>
+        <mat-option value="premierLeague">Premier Luague (EN)</mat-option>
+        <mat-option value="serieA">Serie A (IT)</mat-option>
+        <mat-option value="bundesliga">Bundesliga (GE)</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="matches__filter">
+      <mat-label>Jornada:</mat-label>
+      <mat-select matNativeControl [(value)]="currentMatchday" (selectionChange)="filterByMatchday($event)">
+        <mat-option *ngFor="let matchday of matchDays" [value]="matchday">
+          {{ matchday }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <p class="matches__alert" *ngIf="alertText">{{alertText}}</p>
+  </div>
+  <div class="match__wrapper">
+    <div class="match__card" *ngFor="let match of matches">
+      <div class="match__teams">
+        <p class="match__team">
+          <span class="match__team-name">{{match.homeTeam.name}}</span>
+          <span class="match__team-score">
+            {{match.score.extraTime.homeTeam || match.score.fullTime.homeTeam || match.score.halfTime.homeTeam || 0}}
+          </span>
+        </p>
+        <p class="match__team">
+          <span class="match__team-name">{{match.awayTeam.name}}</span>
+          <span class="match__team-score">
+            {{match.score.extraTime.awayTeam || match.score.fullTime.awayTeam || match.score.halfTime.awayTeam || 0}}
+          </span>
+        </p>
+      </div>
+      <div class="match__info" *ngIf="match.status === 'IN_PLAY'; else matchDate">
+        <p class="match__date">EN VIVO</p>
+      </div>
+      <ng-template #matchDate>
+        <div class="match__info">
+          <p class="match__date">{{match.utcDate | date:'d MMM':'+0200':'es' }}</p>
+          <p class="match__date">{{match.utcDate | date:'HH:mm':'+0200':'es' }}</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</section>
 
 <ng-template #loading>
   <p class="loading-text">Cargando...</p>

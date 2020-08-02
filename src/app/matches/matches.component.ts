@@ -9,21 +9,54 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./matches.component.scss']
 })
 export class MatchesComponent implements OnInit, OnDestroy {
-  matches: Match[] = []
-  mSub: Subscription
+  matches: Match[] = [];
+  matchDays = [];
+  currentMatchday: number;
+  selectedMachday: number;
+  mSub: Subscription;
+  selectedLegue = 'primeraDivision';
+  alertText: string;
 
-  constructor(private dataService: DataService) { }
+  constructor(
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
-    this.mSub = this.dataService.getMatches().subscribe((response: ApiMatchesRespone) => {
-      this.matches=response["matches"]
-    })
+    this.getLeagueMatches(this.selectedLegue);
   }
 
   ngOnDestroy(): void {
-    if(this.mSub) {
-      this.mSub.unsubscribe()
+    if (this.mSub) {
+      this.mSub.unsubscribe();
     }
   }
 
+  filterByMatchday(event: any) {
+    this.selectedMachday = event.value;
+    this.dataService.getMatchesByMatchday(this.selectedLegue, this.selectedMachday).subscribe(response => {
+      this.matches = response.matches;
+    });
+  }
+
+  getLeagueMatches(league: string) {
+    this.selectedLegue = league;
+    this.mSub = this.dataService.getMatches(this.selectedLegue).subscribe((response: ApiMatchesRespone) => {
+      if ( response.matches.length > 0) {
+        this.matches = response.matches;
+      } else {
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          this.alertText = '';
+        }, 3000);
+        this.alertText = 'No hay partidos pendientes';
+      }
+      this.currentMatchday = this.matches[0].season.currentMatchday;
+      this.selectedMachday = this.currentMatchday;
+      this.matchDays = [];
+      for (let i = 1; i <= this.currentMatchday; i++) {
+        this.matchDays.push(i);
+      }
+      this.matches = this.matches.filter(match => match.matchday === this.selectedMachday);
+    });
+  }
 }

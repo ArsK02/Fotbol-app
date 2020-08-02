@@ -10,24 +10,35 @@ import { Team, ApiStandingsRespone } from './interfaces';
 export class DataService {
   headers = new HttpHeaders({
     'X-Auth-Token': '3c25023a9b924adbbe90793469260ad8'
-  })
+  });
 
-  private _teams: Subject<Array<Team>> = new BehaviorSubject<Array<Team>>([])
+  private _teams: Subject<Array<Team>> = new BehaviorSubject<Array<Team>>([]);
 
-  public readonly teams: Observable<Array<Team>> = this._teams.asObservable()
+  public readonly teams: Observable<Array<Team>> = this._teams.asObservable();
 
-  private _matches: Subject<Array<Math>> = new BehaviorSubject<Array<Math>>([])
+  private readonly leagues = {
+    bundesliga: 'BL1',
+    premierLeague: 'PL',
+    serieA: 'SA',
+    primeraDivision: 'PD'
+  };
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient) { }
 
-  getClassification() {
-    return this.http.get(`${environment.footballDataUrl}/competitions/2014/standings`, { headers: this.headers })
+  getClassification(league: string) {
+    return this.http.get(`${environment.footballDataUrl}/competitions/${this.leagues[league]}/standings`, { headers: this.headers })
       .subscribe((response: ApiStandingsRespone) => {
-        this._teams.next(response.standings[0].table)
-      })
+        this._teams.next(response.standings[0].table);
+      });
   }
 
-  getMatches() {
-    return this.http.get(`${environment.footballDataUrl}/competitions/2014/matches?status=SCHEDULED`, { headers: this.headers })
+  getMatches(league: string) {
+    return this.http.get(`${environment.footballDataUrl}/competitions/${this.leagues[league]}/matches`, { headers: this.headers });
+  }
+
+  getMatchesByMatchday(league: string, matchday: number): Observable<any> {
+    // tslint:disable-next-line: max-line-length
+    return this.http.get(`${environment.footballDataUrl}/competitions/${this.leagues[league]}/matches?matchday=${matchday}`, { headers: this.headers });
   }
 }

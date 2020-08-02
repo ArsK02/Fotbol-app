@@ -1,17 +1,29 @@
-<nav class="navigation">
-  <div class="navigation__wrapper container">
-    <h1 class="navigation__title">Futbol</h1>
-    <ul class="navigation__list">
-      <li class="navigation__item" routerLinkActive="navigation__item--active">
-        <a [routerLink]="['/partidos']" class="navigation__link">Partidos</a>
-      </li>
-      <li class="navigation__item" routerLinkActive="navigation__item--active">
-        <a [routerLink]="['/clasificacion']" class="navigation__link">Clasificación</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<div class="page-wrapper">
+  <header class="page-header">
+    <nav class="navigation">
+      <div class="navigation__wrapper container">
+        <h1 class="navigation__title">Futbol</h1>
+        <ul class="navigation__list">
+          <li class="navigation__item" routerLinkActive="navigation__item--active">
+            <a [routerLink]="['/partidos']" class="navigation__link">Partidos</a>
+          </li>
+          <li class="navigation__item" routerLinkActive="navigation__item--active">
+            <a [routerLink]="['/clasificacion']" class="navigation__link">Clasificación</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
 
-<div class="container">
-  <router-outlet></router-outlet>
+
+  <main class="page-content container">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__wrapper container">
+      <p class="footer__disclaimer">Football data provided by the Football-Data.org API</p>
+    </div>
+  </footer>
+
 </div>

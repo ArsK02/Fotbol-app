@@ -1,50 +1,147 @@
 @import "../../variables.scss";
 
 .matches {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 
-  font-size: 16px;
+  padding-top: 20px;
+}
+
+.matches__header {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.matches__alert {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+
+  width: 200px;
+  padding: 10px;
+  margin-left: -100px;
+
+  color: $white;
+  text-align: center;
+  background-color: rgba(244, 67, 54, 0.5);
+}
+
+.matches__league-name {
+  margin-right: auto;
+
+  font-size: 22px;
   line-height: 28px;
 }
 
-.matches__body {
-  width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
+.classification__filter {
+  margin-right: 20px;
+}
 
+.matches__filter {
+  width: 55px;
+}
+
+.matches__matchday {
+  font-size: 16px;
+}
+
+.match__wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.match__card {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 105px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+  background-color: rgba(200, 230, 201, 0.8);
+  border-radius: 10px;
   box-sizing: border-box;
 }
 
-.matches__row {
+.match__teams {
+  width: 60%;
+
+  border-right: 1px solid $green;
+}
+
+.match__team {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding-top: 5px;
-  padding-bottom: 5px;
-
-  border-bottom: 1px solid $yellow;
-}
-
-.matches__td {
-  padding-right: 5px;
-  padding-left: 5px;
-
-  text-align: center;
-
-  &--team {
-    width: 40%;
-  }
-
-  &--date {
-    border-right: 1px solid $yellow;
-    border-left: 1px solid $yellow;
-  }
-}
-
-.matches__date {
   margin: 0;
-  font-weight: bold;
+  padding-right: 10px;
+
+  &:first-child {
+    margin-bottom: 10px;
+  }
+}
+
+.match__team-name {
+  margin-right: 10px;
+}
+
+.match__team-score {
+  font-size: 16px;
+}
+
+.match__info {
+  width: 40%;
+
+  font-size: 16px;
+  text-align: center;
+}
+
+.match__date {
+  margin: 0;
+
+  &:first-child {
+    margin-bottom: 5px;
+  }
+}
+
+@media (min-width: $tablet-width) {
+  .matches {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .matches__header {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .matches__league-name {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .matches__filter {
+    width: 90px;
+  }
+
+  .match__card {
+    width: 300px;
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .match__card {
+    width: 340px;
+  }
 }

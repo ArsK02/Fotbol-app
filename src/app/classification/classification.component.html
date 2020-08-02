@@ -1,5 +1,18 @@
 <div class="classification">
-  <h1 class="classification__title">Clasificación LaLiga Santander</h1>
+  <div class="classification__header">
+    <mat-form-field class="classification__filter">
+      <mat-label>Leagues</mat-label>
+      <mat-select #select [(value)]="selectedLegue" (selectionChange)="getStandings(select.value)">
+        <mat-option value="primeraDivision" >LaLiga Santander (ES)</mat-option>
+        <mat-option value="premierLeague" >Premier Luague (EN)</mat-option>
+        <mat-option value="serieA" >Serie A (IT)</mat-option>
+        <mat-option value="bundesliga">Bundesliga (GE)</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h2 class="classification__title">Clasificación {{ leagueTitle[select.value] }}</h2>
+  </div>
+
   <table mat-table [dataSource]="teams$" class="classification__table">
     <ng-container matColumnDef="points">
       <th mat-header-cell *matHeaderCellDef class="classification_th"> PT </th>
@@ -13,7 +26,10 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef class="classification_th classification_th--team"> Team </th>
-      <td mat-cell *matCellDef="let team" class="classification__td classification__td--team"> {{team.team.name}} </td>
+      <td mat-cell *matCellDef="let team" class="classification__td classification__td--team">
+        <img class="classification__team-logo" src={{team.team.crestUrl}} alt={{team.team.name}} width="20px" height="25px">
+        <span class="classification__team-name">{{team.team.name}} </span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="playedGames">

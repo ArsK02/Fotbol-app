@@ -1,4 +1,4 @@
-export interface Team {
+export interface TeamStandings {
   position: number;
   team: {
       id: number
@@ -24,7 +24,7 @@ export interface Standing {
   stage: string;
   type: string;
   group: string;
-  table: Team[];
+  table: TeamStandings[];
 }
 
 export interface ApiMatchesRespone {
@@ -35,6 +35,7 @@ export interface ApiMatchesRespone {
 export interface Match {
   status: string;
   matchday: number;
+  stage: any;
   awayTeam: {
     id: number
     name: string
@@ -70,4 +71,15 @@ export interface Match {
 export interface Leagues {
   value: string;
   viewValue: string;
+}
+
+export interface ApiTeamsRespone {
+  teams: Team[];
+  [unusedProperties: string]: any;
+}
+
+export interface Team {
+  id: number;
+  name: string;
+  crestUrl: any;
 }

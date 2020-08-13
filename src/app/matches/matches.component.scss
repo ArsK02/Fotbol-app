@@ -81,7 +81,6 @@
 
 .match__team {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
   margin: 0;
@@ -92,11 +91,16 @@
   }
 }
 
+.match__team-logo {
+  margin-right: 10px;
+}
+
 .match__team-name {
   margin-right: 10px;
 }
 
 .match__team-score {
+  margin-left: auto;
   font-size: 16px;
 }
 

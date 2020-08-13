@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Team } from '../shared/interfaces';
+import { TeamStandings } from '../shared/interfaces';
 import { DataService } from '../shared/data.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class ClassificationComponent implements OnInit {
     'goalsAgainst'
   ];
 
-  teams$: Observable<Team[]>;
+  teams$: Observable<TeamStandings[]>;
   leagueTitle = {
     bundesliga: 'Bundesliga',
     premierLeague: 'Premier Luague',

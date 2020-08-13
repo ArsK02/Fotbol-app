@@ -4,15 +4,16 @@
 
     <mat-form-field class="classification__filter">
       <mat-label>Leagues</mat-label>
-      <mat-select #select [(value)]="selectedLegue" (selectionChange)="getLeagueMatches(select.value)">
+      <mat-select #selectLeague [(value)]="selectedLegue" (selectionChange)="getLeagueMatches()">
         <mat-option value="primeraDivision">LaLiga Santander (ES)</mat-option>
         <mat-option value="premierLeague">Premier Luague (EN)</mat-option>
         <mat-option value="serieA">Serie A (IT)</mat-option>
         <mat-option value="bundesliga">Bundesliga (GE)</mat-option>
+        <mat-option value="championsLeague">UEFA Champions League</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="matches__filter">
+    <mat-form-field class="matches__filter" *ngIf="selectLeague.value !== 'championsLeague'; else championsLeagueFilter">
       <mat-label>Jornada:</mat-label>
       <mat-select matNativeControl [(value)]="currentMatchday" (selectionChange)="filterByMatchday($event)">
         <mat-option *ngFor="let matchday of matchDays" [value]="matchday">
@@ -21,20 +22,34 @@
       </mat-select>
     </mat-form-field>
 
+    <ng-template #championsLeagueFilter>
+      <mat-form-field class="matches__filter">
+        <mat-select matNativeControl #CLselect [(value)]="selectedStage" (selectionChange)="filterByStage(CLselect.value)">
+          <mat-option value="GROUP_STAGE">Fase de grupos</mat-option>
+          <mat-option value="ROUND_OF_16">Octavos</mat-option>
+          <mat-option value="QUARTER_FINALS">Cuartos</mat-option>
+          <mat-option value="SEMI_FINALS">Semifinal</mat-option>
+          <mat-option value="FINAL">Final</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-template>
+
     <p class="matches__alert" *ngIf="alertText">{{alertText}}</p>
   </div>
-  <div class="match__wrapper">
+  <div class="match__wrapper" *ngIf="matches.length > 0; else loading">
     <div class="match__card" *ngFor="let match of matches">
       <div class="match__teams">
         <p class="match__team">
+          <img class="match__team-logo" src={{teamsLogos[match.homeTeam.id]}} width="20px" height="25px">
           <span class="match__team-name">{{match.homeTeam.name}}</span>
-          <span class="match__team-score">
+          <span class="match__team-score" *ngIf="match.status === 'FINISHED'">
             {{match.score.extraTime.homeTeam || match.score.fullTime.homeTeam || match.score.halfTime.homeTeam || 0}}
           </span>
         </p>
         <p class="match__team">
+          <img class="match__team-logo" src={{teamsLogos[match.awayTeam.id]}} width="20px" height="25px">
           <span class="match__team-name">{{match.awayTeam.name}}</span>
-          <span class="match__team-score">
+          <span class="match__team-score" *ngIf="match.status === 'FINISHED'">
             {{match.score.extraTime.awayTeam || match.score.fullTime.awayTeam || match.score.halfTime.awayTeam || 0}}
           </span>
         </p>

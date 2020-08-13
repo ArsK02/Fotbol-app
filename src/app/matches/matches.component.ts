@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { DataService } from '../shared/data.service';
-import { Match, ApiMatchesRespone } from '../shared/interfaces';
+import { Match, ApiMatchesRespone, ApiTeamsRespone } from '../shared/interfaces';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,11 +10,14 @@ import { Subscription } from 'rxjs';
 })
 export class MatchesComponent implements OnInit, OnDestroy {
   matches: Match[] = [];
+  teamsLogos: object;
   matchDays = [];
   currentMatchday: number;
   selectedMachday: number;
+  selectedStage = 'GROUP_STAGE';
   mSub: Subscription;
-  selectedLegue = 'primeraDivision';
+  @ViewChild('selectLeague') selectLeague: ElementRef;
+  selectedLegue = !!this.selectLeague ? this.selectLeague.nativeElement.value : 'primeraDivision';
   alertText: string;
 
   constructor(
@@ -22,7 +25,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.getLeagueMatches(this.selectedLegue);
+    this.getLeagueMatches();
   }
 
   ngOnDestroy(): void {
@@ -38,8 +41,14 @@ export class MatchesComponent implements OnInit, OnDestroy {
     });
   }
 
-  getLeagueMatches(league: string) {
-    this.selectedLegue = league;
+  filterByStage(stage: any) {
+    this.dataService.getMatchesByStage(stage).subscribe(response => {
+      this.matches = response.matches;
+    });
+  }
+
+  getLeagueMatches() {
+    this.matches = [];
     this.mSub = this.dataService.getMatches(this.selectedLegue).subscribe((response: ApiMatchesRespone) => {
       if ( response.matches.length > 0) {
         this.matches = response.matches;
@@ -56,7 +65,17 @@ export class MatchesComponent implements OnInit, OnDestroy {
       for (let i = 1; i <= this.currentMatchday; i++) {
         this.matchDays.push(i);
       }
-      this.matches = this.matches.filter(match => match.matchday === this.selectedMachday);
+      if (this.selectedLegue !== 'championsLeague') {
+        this.matches = this.matches.filter(match => match.matchday === this.selectedMachday);
+      } else {
+        this.matches = this.matches.filter(match => match.stage === this.selectedStage);
+      }
+    }),
+    this.dataService.getTeams(this.selectedLegue).subscribe((response: ApiTeamsRespone) => {
+      this.teamsLogos = {};
+      response.teams.forEach(element => {
+        this.teamsLogos[element.id] = element.crestUrl;
+      });
     });
   }
 }
